@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Админ-панель{% endblock %} — Радио</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2>&#9836; Радио</h2>
+            <span class="sidebar-subtitle">Админ-панель</span>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="{{ url_for('admin.dashboard') }}" class="{% if request.endpoint == 'admin.dashboard' %}active{% endif %}">&#9776; Главная</a></li>
+            <li><a href="{{ url_for('admin.stations_list') }}" class="{% if 'station' in request.endpoint %}active{% endif %}">&#9881; Станции</a></li>
+            <li><a href="{{ url_for('admin.users_list') }}" class="{% if 'user' in request.endpoint %}active{% endif %}">&#128100; Пользователи</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <a href="{{ url_for('public.index') }}" target="_blank">&#127911; Открыть радио</a>
+            <a href="{{ url_for('auth.logout') }}">&#10140; Выйти</a>
+        </div>
+    </nav>
+
+    <main class="content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,62 @@
+{% extends "admin/base.html" %}
+{% block title %}Загрузка треков — {{ station.name }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Загрузка треков: {{ station.name }}</h1>
+    <a href="{{ url_for('admin.tracks_list', station_id=station.id) }}" class="btn btn-outline">Назад</a>
+</div>
+
+<form method="POST" enctype="multipart/form-data" class="form-card">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <div class="form-group">
+        <label for="files">Выберите MP3 файлы</label>
+        <div class="upload-area" id="upload-area">
+            <input type="file" id="files" name="files" multiple accept=".mp3,audio/mpeg" required>
+            <p class="upload-hint">Перетащите файлы сюда или нажмите для выбора</p>
+            <p class="upload-info">Поддерживается: MP3, до 100 МБ на файл</p>
+        </div>
+        <div id="file-list" class="file-list"></div>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Загрузить</button>
+        <a href="{{ url_for('admin.tracks_list', station_id=station.id) }}" class="btn btn-outline">Отмена</a>
+    </div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const input = document.getElementById('files');
+    const fileList = document.getElementById('file-list');
+    const area = document.getElementById('upload-area');
+
+    input.addEventListener('change', function() {
+        fileList.innerHTML = '';
+        for (const f of this.files) {
+            const div = document.createElement('div');
+            div.className = 'file-item';
+            div.textContent = f.name + ' (' + (f.size / 1048576).toFixed(1) + ' МБ)';
+            fileList.appendChild(div);
+        }
+    });
+
+    area.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        area.classList.add('drag-over');
+    });
+    area.addEventListener('dragleave', function() {
+        area.classList.remove('drag-over');
+    });
+    area.addEventListener('drop', function(e) {
+        e.preventDefault();
+        area.classList.remove('drag-over');
+        input.files = e.dataTransfer.files;
+        input.dispatchEvent(new Event('change'));
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "admin/base.html" %}
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<h1>Панель управления</h1>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-number">{{ station_count }}</div>
+        <div class="stat-label">Станций</div>
+        <a href="{{ url_for('admin.stations_list') }}" class="stat-link">Управлять</a>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ track_count }}</div>
+        <div class="stat-label">Треков</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ user_count }}</div>
+        <div class="stat-label">Пользователей</div>
+        <a href="{{ url_for('admin.users_list') }}" class="stat-link">Управлять</a>
+    </div>
+</div>
+
+<div class="quick-actions">
+    <h2>Быстрые действия</h2>
+    <div class="action-buttons">
+        <a href="{{ url_for('admin.station_add') }}" class="btn btn-primary">+ Добавить станцию</a>
+        <a href="{{ url_for('admin.user_add') }}" class="btn btn-secondary">+ Добавить пользователя</a>
+        <a href="{{ url_for('public.index') }}" class="btn btn-outline" target="_blank">Открыть радио</a>
+    </div>
+</div>
+{% endblock %}

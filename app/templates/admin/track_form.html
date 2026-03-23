@@ -1,0 +1,39 @@
+{% extends "admin/base.html" %}
+{% block title %}Редактировать трек{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Редактировать трек</h1>
+    <a href="{{ url_for('admin.tracks_list', station_id=station.id) }}" class="btn btn-outline">Назад</a>
+</div>
+
+<form method="POST" class="form-card">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <div class="form-group">
+        <label for="title">Название *</label>
+        <input type="text" id="title" name="title" required value="{{ track.title }}">
+    </div>
+
+    <div class="form-group">
+        <label for="artist">Исполнитель</label>
+        <input type="text" id="artist" name="artist" value="{{ track.artist }}">
+    </div>
+
+    <div class="form-group">
+        <label for="sort_order">Порядок</label>
+        <input type="number" id="sort_order" name="sort_order" value="{{ track.sort_order }}">
+    </div>
+
+    <div class="form-info">
+        <p>Файл: <code>{{ track.filename }}</code></p>
+        <p>Длительность: {{ '%d:%02d' % (track.duration // 60, track.duration % 60) }}</p>
+        <p>Размер: {{ '%.1f' % (track.file_size / 1048576) }} МБ</p>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <a href="{{ url_for('admin.tracks_list', station_id=station.id) }}" class="btn btn-outline">Отмена</a>
+    </div>
+</form>
+{% endblock %}

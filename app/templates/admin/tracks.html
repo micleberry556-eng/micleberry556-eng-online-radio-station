@@ -1,0 +1,60 @@
+{% extends "admin/base.html" %}
+{% block title %}Треки — {{ station.name }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Треки: {{ station.name }}</h1>
+    <div class="header-actions">
+        <a href="{{ url_for('admin.track_upload', station_id=station.id) }}" class="btn btn-primary">+ Загрузить MP3</a>
+        <a href="{{ url_for('admin.stations_list') }}" class="btn btn-outline">Назад к станциям</a>
+    </div>
+</div>
+
+{% if tracks %}
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Название</th>
+            <th>Исполнитель</th>
+            <th>Длительность</th>
+            <th>Размер</th>
+            <th>Порядок</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for track in tracks %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td><strong>{{ track.title }}</strong></td>
+            <td>{{ track.artist or '—' }}</td>
+            <td>{{ '%d:%02d' % (track.duration // 60, track.duration % 60) }}</td>
+            <td>{{ '%.1f' % (track.file_size / 1048576) }} МБ</td>
+            <td>{{ track.sort_order }}</td>
+            <td class="actions">
+                <form method="POST" action="{{ url_for('admin.track_move', track_id=track.id, direction='up') }}" class="inline-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-sm btn-outline" title="Вверх">&#9650;</button>
+                </form>
+                <form method="POST" action="{{ url_for('admin.track_move', track_id=track.id, direction='down') }}" class="inline-form">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-sm btn-outline" title="Вниз">&#9660;</button>
+                </form>
+                <a href="{{ url_for('admin.track_edit', track_id=track.id) }}" class="btn btn-sm btn-secondary">Редактировать</a>
+                <form method="POST" action="{{ url_for('admin.track_delete', track_id=track.id) }}" class="inline-form" onsubmit="return confirm('Удалить трек «{{ track.title }}»?')">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="empty-state">
+    <p>В этой станции пока нет треков. Загрузите MP3 файлы!</p>
+    <a href="{{ url_for('admin.track_upload', station_id=station.id) }}" class="btn btn-primary">+ Загрузить MP3</a>
+</div>
+{% endif %}
+{% endblock %}

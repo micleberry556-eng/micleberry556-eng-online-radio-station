@@ -1,0 +1,47 @@
+{% extends "public/base.html" %}
+{% block title %}{{ station.name }} — Онлайн Радио{% endblock %}
+
+{% block content %}
+<section class="station-detail">
+    <div class="station-detail-header">
+        <div class="station-detail-cover">
+            {% if station.image_url %}
+            <img src="{{ station.image_url }}" alt="{{ station.name }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            {% endif %}
+            <div class="station-cover-placeholder" {% if station.image_url %}style="display:none;"{% endif %}>
+                <span>&#9836;</span>
+            </div>
+        </div>
+        <div class="station-detail-info">
+            <h1>{{ station.name }}</h1>
+            <span class="station-genre">{{ station.genre }}</span>
+            <p>{{ station.description }}</p>
+            <button class="btn btn-primary btn-lg station-play-btn" data-slug="{{ station.slug }}" data-name="{{ station.name }}">
+                &#9654; Слушать
+            </button>
+        </div>
+    </div>
+
+    {% if tracks %}
+    <div class="station-playlist">
+        <h2>Плейлист ({{ tracks|length }} треков)</h2>
+        <div class="playlist-list">
+            {% for track in tracks %}
+            <div class="playlist-item">
+                <span class="playlist-num">{{ loop.index }}</span>
+                <div class="playlist-info">
+                    <span class="playlist-title">{{ track.title }}</span>
+                    {% if track.artist %}
+                    <span class="playlist-artist">{{ track.artist }}</span>
+                    {% endif %}
+                </div>
+                <span class="playlist-duration">{{ '%d:%02d' % (track.duration // 60, track.duration % 60) }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</section>
+
+<a href="{{ url_for('public.index') }}" class="back-link">&larr; Все станции</a>
+{% endblock %}

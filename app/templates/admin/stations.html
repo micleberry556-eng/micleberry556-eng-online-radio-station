@@ -1,0 +1,54 @@
+{% extends "admin/base.html" %}
+{% block title %}Станции{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Станции</h1>
+    <a href="{{ url_for('admin.station_add') }}" class="btn btn-primary">+ Добавить станцию</a>
+</div>
+
+{% if stations %}
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Название</th>
+            <th>Slug</th>
+            <th>Жанр</th>
+            <th>Статус</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for st in stations %}
+        <tr>
+            <td>{{ st.sort_order }}</td>
+            <td><strong>{{ st.name }}</strong></td>
+            <td><code>{{ st.slug }}</code></td>
+            <td>{{ st.genre }}</td>
+            <td>
+                {% if st.is_active %}
+                <span class="badge badge-success">Активна</span>
+                {% else %}
+                <span class="badge badge-muted">Выключена</span>
+                {% endif %}
+            </td>
+            <td class="actions">
+                <a href="{{ url_for('admin.tracks_list', station_id=st.id) }}" class="btn btn-sm btn-outline">Треки</a>
+                <a href="{{ url_for('admin.station_edit', station_id=st.id) }}" class="btn btn-sm btn-secondary">Редактировать</a>
+                <form method="POST" action="{{ url_for('admin.station_delete', station_id=st.id) }}" class="inline-form" onsubmit="return confirm('Удалить станцию «{{ st.name }}» и все её треки?')">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="empty-state">
+    <p>Станций пока нет. Создайте первую!</p>
+    <a href="{{ url_for('admin.station_add') }}" class="btn btn-primary">+ Добавить станцию</a>
+</div>
+{% endif %}
+{% endblock %}

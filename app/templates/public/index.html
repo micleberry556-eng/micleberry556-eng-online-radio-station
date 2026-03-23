@@ -1,0 +1,38 @@
+{% extends "public/base.html" %}
+{% block title %}Онлайн Радио — Все станции{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>Онлайн Радио</h1>
+    <p class="hero-sub">Слушайте лучшую музыку в прямом эфире. Все слушатели — одна волна.</p>
+</section>
+
+<section class="stations-grid">
+    {% for st in stations %}
+    <div class="station-card" data-slug="{{ st.slug }}" data-name="{{ st.name }}">
+        <div class="station-cover">
+            {% if st.image_url %}
+            <img src="{{ st.image_url }}" alt="{{ st.name }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            {% endif %}
+            <div class="station-cover-placeholder" {% if st.image_url %}style="display:none;"{% endif %}>
+                <span>&#9836;</span>
+            </div>
+            <button class="station-play-btn" data-slug="{{ st.slug }}" data-name="{{ st.name }}" title="Слушать {{ st.name }}">&#9654;</button>
+        </div>
+        <div class="station-info">
+            <h3 class="station-name">{{ st.name }}</h3>
+            <span class="station-genre">{{ st.genre }}</span>
+            {% if st.description %}
+            <p class="station-desc">{{ st.description }}</p>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</section>
+
+{% if not stations %}
+<div class="empty-hero">
+    <p>Станций пока нет. Администратор скоро добавит!</p>
+</div>
+{% endif %}
+{% endblock %}

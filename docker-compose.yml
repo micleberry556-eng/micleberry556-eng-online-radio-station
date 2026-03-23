@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  radio:
+    build: .
+    container_name: online-radio
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      # Persist the SQLite database and uploaded MP3 files across restarts
+      - radio-data:/app/instance
+      - radio-uploads:/app/app/static/uploads
+    environment:
+      - SECRET_KEY=${SECRET_KEY:-change-me-in-production}
+      - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
+
+volumes:
+  radio-data:
+  radio-uploads:

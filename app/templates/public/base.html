@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Онлайн Радио{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="{{ url_for('public.index') }}" class="logo">&#9836; Онлайн Радио</a>
+            <nav class="header-nav">
+                <a href="{{ url_for('public.index') }}">Станции</a>
+                <a href="{{ url_for('auth.login') }}" class="btn-header">Админ</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Persistent player bar at the bottom -->
+    <div class="player-bar" id="player-bar" style="display:none;">
+        <div class="player-inner">
+            <div class="player-info">
+                <div class="player-station" id="player-station-name">—</div>
+                <div class="player-track" id="player-track-info">Выберите станцию</div>
+            </div>
+            <div class="player-controls">
+                <button class="player-btn" id="btn-play" title="Играть">&#9654;</button>
+                <button class="player-btn" id="btn-stop" title="Стоп" style="display:none;">&#9632;</button>
+            </div>
+            <div class="player-volume">
+                <span class="volume-icon" id="volume-icon">&#128266;</span>
+                <input type="range" id="volume-slider" min="0" max="100" value="80" class="volume-range">
+                <span class="volume-value" id="volume-value">80%</span>
+            </div>
+            <div class="player-listeners">
+                <span id="listener-count">0</span> &#128101;
+            </div>
+        </div>
+    </div>
+
+    <audio id="radio-audio" preload="none"></audio>
+
+    <script src="{{ url_for('static', filename='js/player.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

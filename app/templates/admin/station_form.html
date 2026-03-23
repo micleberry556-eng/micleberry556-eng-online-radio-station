@@ -1,0 +1,57 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Редактировать' if station else 'Добавить' }} станцию{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{{ 'Редактировать' if station else 'Добавить' }} станцию</h1>
+    <a href="{{ url_for('admin.stations_list') }}" class="btn btn-outline">Назад</a>
+</div>
+
+<form method="POST" class="form-card">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <div class="form-group">
+        <label for="name">Название *</label>
+        <input type="text" id="name" name="name" required value="{{ station.name if station else '' }}" placeholder="Например: Deep House">
+    </div>
+
+    <div class="form-group">
+        <label for="slug">Slug (URL) *</label>
+        <input type="text" id="slug" name="slug" required value="{{ station.slug if station else '' }}" placeholder="deep-house" pattern="[a-z0-9\-]+">
+        <small>Только латинские буквы, цифры и дефис</small>
+    </div>
+
+    <div class="form-group">
+        <label for="description">Описание</label>
+        <textarea id="description" name="description" rows="3" placeholder="Описание станции">{{ station.description if station else '' }}</textarea>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="genre">Жанр</label>
+            <input type="text" id="genre" name="genre" value="{{ station.genre if station else '' }}" placeholder="Deep House">
+        </div>
+        <div class="form-group">
+            <label for="sort_order">Порядок сортировки</label>
+            <input type="number" id="sort_order" name="sort_order" value="{{ station.sort_order if station else 0 }}">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="image_url">URL изображения</label>
+        <input type="text" id="image_url" name="image_url" value="{{ station.image_url if station else '' }}" placeholder="/static/img/stations/cover.png">
+    </div>
+
+    <div class="form-group">
+        <label class="checkbox-label">
+            <input type="checkbox" name="is_active" {% if not station or station.is_active %}checked{% endif %}>
+            Станция активна
+        </label>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">{{ 'Сохранить' if station else 'Создать' }}</button>
+        <a href="{{ url_for('admin.stations_list') }}" class="btn btn-outline">Отмена</a>
+    </div>
+</form>
+{% endblock %}
