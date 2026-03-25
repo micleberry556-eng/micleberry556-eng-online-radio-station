@@ -4,10 +4,12 @@ import os
 
 from flask import Flask
 from flask_login import LoginManager
+from flask_wtf.csrf import CSRFProtect
 
 from config import Config
 
 login_manager = LoginManager()
+csrf = CSRFProtect()
 
 
 def create_app(config_class: type = Config) -> Flask:
@@ -22,6 +24,7 @@ def create_app(config_class: type = Config) -> Flask:
     # Initialize extensions
     login_manager.init_app(app)
     login_manager.login_view = "auth.login"  # type: ignore[assignment]
+    csrf.init_app(app)
 
     # Initialize database
     from app.models import init_db
