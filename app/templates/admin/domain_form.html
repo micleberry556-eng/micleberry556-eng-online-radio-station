@@ -1,0 +1,39 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Редактировать' if domain else 'Добавить' }} домен{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{{ 'Редактировать' if domain else 'Добавить' }} домен</h1>
+    <a href="{{ url_for('admin.domains_list') }}" class="btn btn-outline">Назад</a>
+</div>
+
+<form method="POST" class="form-card">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <div class="form-group">
+        <label for="domain">Доменное имя *</label>
+        <input type="text" id="domain" name="domain" required value="{{ domain.domain if domain else '' }}" placeholder="example.com">
+        <small>Введите домен без http:// и www</small>
+    </div>
+
+    <div class="form-group">
+        <label class="checkbox-label">
+            <input type="checkbox" name="is_primary" {% if domain and domain.is_primary %}checked{% endif %}>
+            Основной домен
+        </label>
+        <small>Основной домен используется как главный адрес сайта</small>
+    </div>
+
+    <div class="form-group">
+        <label class="checkbox-label">
+            <input type="checkbox" name="is_active" {% if not domain or domain.is_active %}checked{% endif %}>
+            Домен активен
+        </label>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">{{ 'Сохранить' if domain else 'Добавить' }}</button>
+        <a href="{{ url_for('admin.domains_list') }}" class="btn btn-outline">Отмена</a>
+    </div>
+</form>
+{% endblock %}

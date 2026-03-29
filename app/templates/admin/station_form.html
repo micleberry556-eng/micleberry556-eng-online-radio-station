@@ -7,7 +7,7 @@
     <a href="{{ url_for('admin.stations_list') }}" class="btn btn-outline">Назад</a>
 </div>
 
-<form method="POST" class="form-card">
+<form method="POST" enctype="multipart/form-data" class="form-card">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
     <div class="form-group">
@@ -38,8 +38,17 @@
     </div>
 
     <div class="form-group">
-        <label for="image_url">URL изображения</label>
-        <input type="text" id="image_url" name="image_url" value="{{ station.image_url if station else '' }}" placeholder="/static/img/stations/cover.png">
+        <label for="image_file">Изображение станции</label>
+        <div class="upload-area">
+            <input type="file" id="image_file" name="image_file" accept="image/*">
+            <p class="upload-hint">Перетащите картинку или нажмите для выбора</p>
+            <p class="upload-info">PNG, JPG, WEBP, SVG</p>
+        </div>
+        {% if station and station.image_file %}
+        <div style="margin-top: 12px;">
+            <img src="{{ url_for('static', filename='uploads/' + station.image_file) }}" alt="{{ station.name }}" style="max-width: 200px; border-radius: 8px; border: 1px solid var(--border);">
+        </div>
+        {% endif %}
     </div>
 
     <div class="form-group">

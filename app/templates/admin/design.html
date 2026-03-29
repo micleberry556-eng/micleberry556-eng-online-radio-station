@@ -1,0 +1,133 @@
+{% extends "admin/base.html" %}
+{% block title %}Оформление{% endblock %}
+
+{% block head %}
+<style>
+    .theme-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 14px;
+        margin-bottom: 24px;
+    }
+    .theme-card {
+        border: 2px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        cursor: pointer;
+        transition: border-color 0.2s, transform 0.2s;
+        position: relative;
+    }
+    .theme-card:hover {
+        transform: translateY(-2px);
+    }
+    .theme-card.selected {
+        border-color: var(--primary);
+        box-shadow: 0 0 12px rgba(108, 92, 231, 0.4);
+    }
+    .theme-preview {
+        height: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px;
+    }
+    .theme-preview .swatch {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 1px solid rgba(255,255,255,0.15);
+    }
+    .theme-label {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+        text-align: center;
+        background: var(--bg-input);
+    }
+    .theme-card input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+    .bg-preview {
+        margin-top: 12px;
+        max-width: 300px;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+    }
+    .bg-preview img {
+        width: 100%;
+        border-radius: var(--radius);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Оформление</h1>
+</div>
+
+<form method="POST" enctype="multipart/form-data" class="form-card" style="max-width: 900px;">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <!-- Site title -->
+    <div class="form-group">
+        <label for="site_title">Название сайта</label>
+        <input type="text" id="site_title" name="site_title" value="{{ settings.get('site_title', 'Онлайн Радио') }}" placeholder="Онлайн Радио">
+    </div>
+
+    <!-- Theme selection -->
+    <div class="form-group">
+        <label>Тема оформления</label>
+        <div class="theme-grid">
+            {% for key, theme in themes.items() %}
+            <label class="theme-card {% if settings.get('theme', 'default') == key %}selected{% endif %}">
+                <input type="radio" name="theme" value="{{ key }}" {% if settings.get('theme', 'default') == key %}checked{% endif %}>
+                <div class="theme-preview" style="background: {{ theme['bg'] }};">
+                    <span class="swatch" style="background: {{ theme['primary'] }};"></span>
+                    <span class="swatch" style="background: {{ theme['accent'] }};"></span>
+                    <span class="swatch" style="background: {{ theme['bg-card'] }}; border-color: {{ theme['text'] }};"></span>
+                </div>
+                <div class="theme-label">{{ theme['label'] }}</div>
+            </label>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Background image -->
+    <div class="form-group">
+        <label for="background_image">Фоновое изображение</label>
+        <div class="upload-area">
+            <input type="file" id="background_image" name="background_image" accept="image/*">
+            <p class="upload-hint">Перетащите изображение или нажмите для выбора</p>
+            <p class="upload-info">PNG, JPG, WEBP, SVG</p>
+        </div>
+        {% if settings.get('background_image') %}
+        <div class="bg-preview">
+            <img src="{{ url_for('static', filename='uploads/' + settings['background_image']) }}" alt="Фон">
+        </div>
+        <div style="margin-top: 8px;">
+            <label class="checkbox-label">
+                <input type="checkbox" name="clear_background" value="1">
+                Удалить фоновое изображение
+            </label>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Сохранить оформление</button>
+    </div>
+</form>
+
+<script>
+document.querySelectorAll('.theme-card input[type="radio"]').forEach(function(radio) {
+    radio.addEventListener('change', function() {
+        document.querySelectorAll('.theme-card').forEach(function(c) { c.classList.remove('selected'); });
+        if (this.checked) {
+            this.closest('.theme-card').classList.add('selected');
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -15,6 +15,16 @@
         <div class="stat-label">Треков</div>
     </div>
     <div class="stat-card">
+        <div class="stat-number">{{ domain_count }}</div>
+        <div class="stat-label">Доменов</div>
+        <a href="{{ url_for('admin.domains_list') }}" class="stat-link">Управлять</a>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ page_count }}</div>
+        <div class="stat-label">Страниц</div>
+        <a href="{{ url_for('admin.pages_list') }}" class="stat-link">Управлять</a>
+    </div>
+    <div class="stat-card">
         <div class="stat-number">{{ user_count }}</div>
         <div class="stat-label">Пользователей</div>
         <a href="{{ url_for('admin.users_list') }}" class="stat-link">Управлять</a>
@@ -25,7 +35,8 @@
     <h2>Быстрые действия</h2>
     <div class="action-buttons">
         <a href="{{ url_for('admin.station_add') }}" class="btn btn-primary">+ Добавить станцию</a>
-        <a href="{{ url_for('admin.user_add') }}" class="btn btn-secondary">+ Добавить пользователя</a>
+        <a href="{{ url_for('admin.page_add') }}" class="btn btn-secondary">+ Создать страницу</a>
+        <a href="{{ url_for('admin.design_settings') }}" class="btn btn-secondary">Оформление</a>
         <a href="{{ url_for('public.index') }}" class="btn btn-outline" target="_blank">Открыть радио</a>
     </div>
 </div>

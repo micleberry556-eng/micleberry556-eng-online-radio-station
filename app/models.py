@@ -64,6 +64,7 @@ CREATE TABLE IF NOT EXISTS stations (
     description TEXT    NOT NULL DEFAULT '',
     genre       TEXT    NOT NULL DEFAULT '',
     image_url   TEXT    NOT NULL DEFAULT '',
+    image_file  TEXT    NOT NULL DEFAULT '',
     is_active   INTEGER NOT NULL DEFAULT 1,
     sort_order  INTEGER NOT NULL DEFAULT 0,
     created_at  REAL    NOT NULL
@@ -82,7 +83,48 @@ CREATE TABLE IF NOT EXISTS tracks (
 );
 
 CREATE INDEX IF NOT EXISTS idx_tracks_station ON tracks(station_id, sort_order);
+
+CREATE TABLE IF NOT EXISTS domains (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    domain      TEXT    NOT NULL UNIQUE,
+    is_primary  INTEGER NOT NULL DEFAULT 0,
+    is_active   INTEGER NOT NULL DEFAULT 1,
+    created_at  REAL    NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS pages (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    title       TEXT    NOT NULL,
+    slug        TEXT    NOT NULL UNIQUE,
+    page_type   TEXT    NOT NULL DEFAULT 'custom',
+    content     TEXT    NOT NULL DEFAULT '',
+    is_active   INTEGER NOT NULL DEFAULT 1,
+    sort_order  INTEGER NOT NULL DEFAULT 0,
+    created_at  REAL    NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS site_settings (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    key         TEXT    NOT NULL UNIQUE,
+    value       TEXT    NOT NULL DEFAULT ''
+);
 """
+
+# Allowed page types for the pages section.
+PAGE_TYPES = [
+    ("charts", "Чарты"),
+    ("ads", "Реклама"),
+    ("subscription", "Подписка"),
+    ("custom", "Произвольная"),
+]
+
+# ---------------------------------------------------------------------------
+# Migration helpers — add columns that may not exist in older databases.
+# ---------------------------------------------------------------------------
+
+_MIGRATIONS_SQL = [
+    "ALTER TABLE stations ADD COLUMN image_file TEXT NOT NULL DEFAULT ''",
+]
 
 
 # ---------------------------------------------------------------------------
@@ -168,6 +210,45 @@ _DEMO_STATIONS = [
 # ---------------------------------------------------------------------------
 
 
+def _run_migrations(conn: sqlite3.Connection) -> None:
+    """Apply schema migrations that add columns to existing tables."""
+    for sql in _MIGRATIONS_SQL:
+        try:
+            conn.execute(sql)
+        except sqlite3.OperationalError:
+            # Column already exists — safe to ignore.
+            pass
+
+
+def _seed_site_settings(conn: sqlite3.Connection) -> None:
+    """Insert default site settings if the table is empty."""
+    row = conn.execute("SELECT COUNT(*) FROM site_settings").fetchone()
+    if row[0] == 0:
+        defaults = [
+            ("theme", "default"),
+            ("background_image", ""),
+            ("site_title", "Онлайн Радио"),
+        ]
+        conn.executemany(
+            "INSERT INTO site_settings (key, value) VALUES (?, ?)", defaults
+        )
+
+
+def get_site_settings(db: sqlite3.Connection) -> dict[str, str]:
+    """Return all site_settings rows as a ``{key: value}`` dict."""
+    rows = db.execute("SELECT key, value FROM site_settings").fetchall()
+    return {r["key"]: r["value"] for r in rows}
+
+
+def set_site_setting(db: sqlite3.Connection, key: str, value: str) -> None:
+    """Upsert a single site setting."""
+    db.execute(
+        "INSERT INTO site_settings (key, value) VALUES (?, ?) "
+        "ON CONFLICT(key) DO UPDATE SET value = excluded.value",
+        (key, value),
+    )
+
+
 def init_db(app: Flask) -> None:
     """Create tables and seed demo data if the database is empty."""
     db_path = app.config["DATABASE_PATH"]
@@ -175,6 +256,7 @@ def init_db(app: Flask) -> None:
 
     conn = sqlite3.connect(db_path)
     conn.executescript(_SCHEMA_SQL)
+    _run_migrations(conn)
 
     # Seed admin user if none exists
     row = conn.execute("SELECT COUNT(*) FROM users").fetchone()
@@ -207,6 +289,8 @@ def init_db(app: Flask) -> None:
                     now,
                 ),
             )
+
+    _seed_site_settings(conn)
 
     conn.commit()
     conn.close()

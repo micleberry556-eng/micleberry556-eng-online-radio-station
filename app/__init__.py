@@ -42,4 +42,22 @@ def create_app(config_class: type = Config) -> Flask:
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(stream_bp, url_prefix="/stream")
 
+    # Inject site settings and active theme into every template context.
+    @app.context_processor
+    def inject_site_settings() -> dict[str, object]:
+        from app.models import get_db, get_site_settings
+        from app.admin import THEMES
+
+        try:
+            settings = get_site_settings(get_db())
+        except Exception:
+            settings = {
+                "theme": "default",
+                "background_image": "",
+                "site_title": "Онлайн Радио",
+            }
+        theme_key = settings.get("theme", "default")
+        theme_vars = THEMES.get(theme_key, THEMES["default"])
+        return {"site_settings": settings, "active_theme": theme_vars}
+
     return app
