@@ -38,12 +38,18 @@
     <header class="site-header">
         <div class="header-inner">
             <a href="{{ url_for('public.index') }}" class="logo">&#9836; {{ site_settings.get('site_title', 'Онлайн Радио') }}</a>
-            <nav class="header-nav">
-                <a href="{{ url_for('public.index') }}">Станции</a>
+
+            <!-- Burger button (mobile only) -->
+            <button class="burger" id="burger-btn" aria-label="Меню">
+                <span></span><span></span><span></span>
+            </button>
+
+            <nav class="header-nav" id="header-nav">
+                <a href="{{ url_for('public.index') }}" class="nav-link {% if request.endpoint == 'public.index' %}nav-active{% endif %}">Станции</a>
                 {% for pg in nav_pages %}
-                <a href="{{ url_for('public.page', slug=pg.slug) }}">{{ pg.title }}</a>
+                <a href="{{ url_for('public.page', slug=pg.slug) }}" class="nav-link {% if request.endpoint == 'public.page' and request.view_args.get('slug') == pg.slug %}nav-active{% endif %}">{{ pg.title }}</a>
                 {% endfor %}
-                <a href="{{ url_for('auth.login') }}" class="btn-header">Админ</a>
+                <a href="{{ url_for('auth.login') }}" class="nav-link nav-admin">Админ</a>
             </nav>
         </div>
     </header>
@@ -77,6 +83,24 @@
     <audio id="radio-audio" preload="none"></audio>
 
     <script src="{{ url_for('static', filename='js/player.js') }}"></script>
+    <script>
+    (function(){
+        var btn = document.getElementById('burger-btn');
+        var nav = document.getElementById('header-nav');
+        if (!btn || !nav) return;
+        btn.addEventListener('click', function() {
+            nav.classList.toggle('nav-open');
+            btn.classList.toggle('burger-open');
+        });
+        // Close menu when a link is clicked
+        nav.querySelectorAll('.nav-link').forEach(function(link) {
+            link.addEventListener('click', function() {
+                nav.classList.remove('nav-open');
+                btn.classList.remove('burger-open');
+            });
+        });
+    })();
+    </script>
     {% block scripts %}{% endblock %}
 </body>
 </html>

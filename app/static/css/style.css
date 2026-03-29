@@ -30,8 +30,9 @@ a:hover { color: var(--primary-hover); }
 
 /* ===== Header ===== */
 .site-header {
-    background: rgba(10, 11, 16, 0.9);
-    backdrop-filter: blur(12px);
+    background: rgba(10, 11, 16, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
@@ -40,25 +41,83 @@ a:hover { color: var(--primary-hover); }
 .header-inner {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 14px 24px;
+    padding: 0 24px;
+    height: 56px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 .logo {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--text);
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 .logo:hover { color: var(--primary); }
-.header-nav { display: flex; gap: 20px; align-items: center; }
-.header-nav a { color: var(--text-muted); font-size: 0.9rem; }
-.header-nav a:hover { color: var(--text); }
-.btn-header {
-    padding: 6px 14px;
+
+/* Nav links */
+.header-nav {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+.nav-link {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.nav-link:hover {
+    color: var(--text);
+    background: rgba(255,255,255,0.06);
+}
+.nav-active {
+    color: var(--text);
+    background: rgba(108, 92, 231, 0.15);
+}
+.nav-admin {
+    margin-left: 4px;
     border: 1px solid var(--border);
     border-radius: 8px;
-    font-size: 0.85rem;
+}
+.nav-admin:hover {
+    border-color: var(--primary);
+}
+
+/* Burger button — hidden on desktop */
+.burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    z-index: 60;
+}
+.burger span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--text);
+    border-radius: 2px;
+    transition: all 0.3s;
+}
+.burger-open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+.burger-open span:nth-child(2) {
+    opacity: 0;
+}
+.burger-open span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
 }
 
 /* ===== Main Content ===== */
@@ -672,17 +731,57 @@ a:hover { color: var(--primary-hover); }
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
+    /* Mobile burger menu */
+    .burger { display: flex; }
+    .header-nav {
+        display: none;
+        position: fixed;
+        top: 56px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--bg);
+        flex-direction: column;
+        padding: 20px 24px;
+        gap: 4px;
+        overflow-y: auto;
+        z-index: 55;
+        border-top: 1px solid var(--border);
+    }
+    .header-nav.nav-open {
+        display: flex;
+    }
+    .nav-link {
+        font-size: 1rem;
+        padding: 12px 16px;
+        border-radius: 10px;
+    }
+    .nav-active {
+        background: rgba(108, 92, 231, 0.12);
+    }
+    .nav-admin {
+        margin-left: 0;
+        margin-top: 12px;
+        text-align: center;
+    }
+
     .hero h1 { font-size: 1.8rem; }
-    .stations-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .hero { padding: 28px 0 32px; }
+    .hero-sub { font-size: 0.95rem; }
+    .main-content { padding: 20px 16px; }
+    .stations-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
     .station-detail-header { flex-direction: column; align-items: center; text-align: center; }
     .station-detail-cover { width: 180px; height: 180px; }
     .player-volume { display: none; }
     .player-listeners { display: none; }
+    .player-inner { padding: 0 16px; gap: 12px; }
     .pg-pricing { grid-template-columns: 1fr; }
     .pg-cards { grid-template-columns: 1fr; }
     .schedule-grid { grid-template-columns: 1fr; }
     .schedule-time { min-width: 90px; }
     .pg-cta-contacts { flex-direction: column; gap: 8px; }
+    .content-page h1 { font-size: 1.5rem; }
+    .page-body { padding: 20px 16px; }
 }
 
 @media (max-width: 480px) {
@@ -690,4 +789,7 @@ a:hover { color: var(--primary-hover); }
     .station-play-btn { opacity: 1; }
     .chart-item { padding: 10px 14px; gap: 10px; }
     .chart-pos { font-size: 1.1rem; min-width: 28px; }
+    .hero h1 { font-size: 1.5rem; }
+    .logo { font-size: 1rem; }
+    .player-info { max-width: 50%; }
 }
