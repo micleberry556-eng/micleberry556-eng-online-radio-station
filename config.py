@@ -13,6 +13,7 @@ class Config:
     UPLOAD_FOLDER = os.path.join(BASE_DIR, "app", "static", "uploads")
     MAX_CONTENT_LENGTH = 100 * 1024 * 1024  # 100 MB max upload
     ALLOWED_EXTENSIONS = {"mp3"}
+    ALLOWED_IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp", "svg"}
     # Default admin credentials (change in production)
     DEFAULT_ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
     DEFAULT_ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "admin123")

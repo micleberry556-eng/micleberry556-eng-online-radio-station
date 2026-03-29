@@ -1,0 +1,55 @@
+{% extends "admin/base.html" %}
+{% block title %}Домены{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Домены</h1>
+    <a href="{{ url_for('admin.domain_add') }}" class="btn btn-primary">+ Добавить домен</a>
+</div>
+
+{% if domains %}
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Домен</th>
+            <th>Основной</th>
+            <th>Статус</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for d in domains %}
+        <tr>
+            <td><strong>{{ d.domain }}</strong></td>
+            <td>
+                {% if d.is_primary %}
+                <span class="badge badge-success">Основной</span>
+                {% else %}
+                <span class="badge badge-muted">—</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if d.is_active %}
+                <span class="badge badge-success">Активен</span>
+                {% else %}
+                <span class="badge badge-muted">Выключен</span>
+                {% endif %}
+            </td>
+            <td class="actions">
+                <a href="{{ url_for('admin.domain_edit', domain_id=d.id) }}" class="btn btn-sm btn-secondary">Редактировать</a>
+                <form method="POST" action="{{ url_for('admin.domain_delete', domain_id=d.id) }}" class="inline-form" onsubmit="return confirm('Удалить домен «{{ d.domain }}»?')">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="empty-state">
+    <p>Доменов пока нет. Добавьте первый!</p>
+    <a href="{{ url_for('admin.domain_add') }}" class="btn btn-primary">+ Добавить домен</a>
+</div>
+{% endif %}
+{% endblock %}

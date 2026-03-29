@@ -3,14 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Онлайн Радио{% endblock %}</title>
+    <title>{% block title %}{{ site_settings.get('site_title', 'Онлайн Радио') }}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        :root {
+            --bg: {{ active_theme['bg'] }};
+            --bg-card: {{ active_theme['bg-card'] }};
+            --primary: {{ active_theme['primary'] }};
+            --primary-glow: {{ active_theme['primary'] }}4d;
+            --primary-hover: {{ active_theme['primary'] }};
+            --accent: {{ active_theme['accent'] }};
+            --text: {{ active_theme['text'] }};
+        }
+        {% if site_settings.get('background_image') %}
+        body {
+            background-image: url("{{ url_for('static', filename='uploads/' + site_settings['background_image']) }}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: -1;
+        }
+        {% endif %}
+    </style>
     {% block head %}{% endblock %}
 </head>
 <body>
     <header class="site-header">
         <div class="header-inner">
-            <a href="{{ url_for('public.index') }}" class="logo">&#9836; Онлайн Радио</a>
+            <a href="{{ url_for('public.index') }}" class="logo">&#9836; {{ site_settings.get('site_title', 'Онлайн Радио') }}</a>
             <nav class="header-nav">
                 <a href="{{ url_for('public.index') }}">Станции</a>
                 <a href="{{ url_for('auth.login') }}" class="btn-header">Админ</a>

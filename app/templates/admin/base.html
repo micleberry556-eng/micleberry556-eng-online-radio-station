@@ -15,7 +15,10 @@
         </div>
         <ul class="sidebar-nav">
             <li><a href="{{ url_for('admin.dashboard') }}" class="{% if request.endpoint == 'admin.dashboard' %}active{% endif %}">&#9776; Главная</a></li>
-            <li><a href="{{ url_for('admin.stations_list') }}" class="{% if 'station' in request.endpoint %}active{% endif %}">&#9881; Станции</a></li>
+            <li><a href="{{ url_for('admin.stations_list') }}" class="{% if 'station' in request.endpoint and 'track' not in request.endpoint %}active{% endif %}">&#9881; Станции</a></li>
+            <li><a href="{{ url_for('admin.domains_list') }}" class="{% if 'domain' in request.endpoint %}active{% endif %}">&#127760; Домены</a></li>
+            <li><a href="{{ url_for('admin.pages_list') }}" class="{% if 'page' in request.endpoint %}active{% endif %}">&#128196; Страницы</a></li>
+            <li><a href="{{ url_for('admin.design_settings') }}" class="{% if request.endpoint == 'admin.design_settings' %}active{% endif %}">&#127912; Оформление</a></li>
             <li><a href="{{ url_for('admin.users_list') }}" class="{% if 'user' in request.endpoint %}active{% endif %}">&#128100; Пользователи</a></li>
         </ul>
         <div class="sidebar-footer">

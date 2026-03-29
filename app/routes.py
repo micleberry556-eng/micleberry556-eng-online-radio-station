@@ -30,3 +30,15 @@ def station(slug: str) -> str:
         "SELECT * FROM tracks WHERE station_id = ? ORDER BY sort_order", (st["id"],)
     ).fetchall()
     return render_template("public/station.html", station=st, tracks=tracks)
+
+
+@public_bp.route("/page/<slug>")
+def page(slug: str) -> str:
+    """Render a user-created content page (charts, ads, subscription, etc.)."""
+    db = get_db()
+    p = db.execute(
+        "SELECT * FROM pages WHERE slug = ? AND is_active = 1", (slug,)
+    ).fetchone()
+    if p is None:
+        return render_template("public/404.html"), 404  # type: ignore[return-value]
+    return render_template("public/page.html", page=p)

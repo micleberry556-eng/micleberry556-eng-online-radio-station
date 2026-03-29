@@ -1,14 +1,16 @@
 {% extends "public/base.html" %}
-{% block title %}{{ station.name }} — Онлайн Радио{% endblock %}
+{% block title %}{{ station.name }} — {{ site_settings.get('site_title', 'Онлайн Радио') }}{% endblock %}
 
 {% block content %}
 <section class="station-detail">
     <div class="station-detail-header">
         <div class="station-detail-cover">
-            {% if station.image_url %}
+            {% if station.image_file %}
+            <img src="{{ url_for('static', filename='uploads/' + station.image_file) }}" alt="{{ station.name }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            {% elif station.image_url %}
             <img src="{{ station.image_url }}" alt="{{ station.name }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
             {% endif %}
-            <div class="station-cover-placeholder" {% if station.image_url %}style="display:none;"{% endif %}>
+            <div class="station-cover-placeholder" {% if station.image_file or station.image_url %}style="display:none;"{% endif %}>
                 <span>&#9836;</span>
             </div>
         </div>

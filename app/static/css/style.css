@@ -356,6 +356,30 @@ a:hover { color: var(--primary-hover); }
     background: var(--accent);
 }
 
+/* ===== Content Pages ===== */
+.content-page {
+    padding: 20px 0;
+}
+.content-page h1 {
+    font-size: 2rem;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.page-body {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    line-height: 1.8;
+    font-size: 0.95rem;
+}
+.page-body h2, .page-body h3 { margin: 20px 0 12px; }
+.page-body p { margin-bottom: 12px; }
+.page-body img { max-width: 100%; border-radius: 8px; }
+
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
     .hero h1 { font-size: 1.8rem; }
