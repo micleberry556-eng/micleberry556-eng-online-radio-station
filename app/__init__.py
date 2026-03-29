@@ -42,22 +42,31 @@ def create_app(config_class: type = Config) -> Flask:
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(stream_bp, url_prefix="/stream")
 
-    # Inject site settings and active theme into every template context.
+    # Inject site settings, active theme, and nav pages into every template.
     @app.context_processor
     def inject_site_settings() -> dict[str, object]:
         from app.models import get_db, get_site_settings
         from app.admin import THEMES
 
         try:
-            settings = get_site_settings(get_db())
+            db = get_db()
+            settings = get_site_settings(db)
+            nav_pages = db.execute(
+                "SELECT title, slug FROM pages WHERE is_active = 1 ORDER BY sort_order"
+            ).fetchall()
         except Exception:
             settings = {
                 "theme": "default",
                 "background_image": "",
                 "site_title": "Онлайн Радио",
             }
+            nav_pages = []
         theme_key = settings.get("theme", "default")
         theme_vars = THEMES.get(theme_key, THEMES["default"])
-        return {"site_settings": settings, "active_theme": theme_vars}
+        return {
+            "site_settings": settings,
+            "active_theme": theme_vars,
+            "nav_pages": nav_pages,
+        }
 
     return app

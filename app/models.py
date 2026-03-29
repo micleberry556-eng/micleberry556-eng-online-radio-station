@@ -128,6 +128,350 @@ _MIGRATIONS_SQL = [
 
 
 # ---------------------------------------------------------------------------
+# Seed pages — pre-built content pages with styled HTML
+# ---------------------------------------------------------------------------
+
+_DEMO_PAGES = [
+    {
+        "title": "Топ чарт",
+        "slug": "charts",
+        "page_type": "charts",
+        "sort_order": 0,
+        "content": """
+<div class="pg-section">
+    <p class="pg-lead">Самые горячие треки этой недели по версии наших слушателей.</p>
+
+    <div class="chart-list">
+        <div class="chart-item chart-gold">
+            <span class="chart-pos">1</span>
+            <div class="chart-info">
+                <span class="chart-title">Blinding Lights</span>
+                <span class="chart-artist">The Weeknd</span>
+            </div>
+            <span class="chart-badge">&#9733; HIT</span>
+        </div>
+        <div class="chart-item chart-silver">
+            <span class="chart-pos">2</span>
+            <div class="chart-info">
+                <span class="chart-title">Levitating</span>
+                <span class="chart-artist">Dua Lipa</span>
+            </div>
+            <span class="chart-badge">&#9650; +3</span>
+        </div>
+        <div class="chart-item chart-bronze">
+            <span class="chart-pos">3</span>
+            <div class="chart-info">
+                <span class="chart-title">Save Your Tears</span>
+                <span class="chart-artist">The Weeknd & Ariana Grande</span>
+            </div>
+            <span class="chart-badge">&#9650; +1</span>
+        </div>
+        <div class="chart-item">
+            <span class="chart-pos">4</span>
+            <div class="chart-info">
+                <span class="chart-title">Stay</span>
+                <span class="chart-artist">The Kid LAROI & Justin Bieber</span>
+            </div>
+            <span class="chart-badge">NEW</span>
+        </div>
+        <div class="chart-item">
+            <span class="chart-pos">5</span>
+            <div class="chart-info">
+                <span class="chart-title">Heat Waves</span>
+                <span class="chart-artist">Glass Animals</span>
+            </div>
+            <span class="chart-badge">&#9650; +2</span>
+        </div>
+        <div class="chart-item">
+            <span class="chart-pos">6</span>
+            <div class="chart-info">
+                <span class="chart-title">Peaches</span>
+                <span class="chart-artist">Justin Bieber ft. Daniel Caesar</span>
+            </div>
+            <span class="chart-badge">&#9660; -1</span>
+        </div>
+        <div class="chart-item">
+            <span class="chart-pos">7</span>
+            <div class="chart-info">
+                <span class="chart-title">Montero</span>
+                <span class="chart-artist">Lil Nas X</span>
+            </div>
+            <span class="chart-badge">&#9650; +4</span>
+        </div>
+        <div class="chart-item">
+            <span class="chart-pos">8</span>
+            <div class="chart-info">
+                <span class="chart-title">Kiss Me More</span>
+                <span class="chart-artist">Doja Cat ft. SZA</span>
+            </div>
+            <span class="chart-badge">&#9660; -2</span>
+        </div>
+        <div class="chart-item">
+            <span class="chart-pos">9</span>
+            <div class="chart-info">
+                <span class="chart-title">Astronaut In The Ocean</span>
+                <span class="chart-artist">Masked Wolf</span>
+            </div>
+            <span class="chart-badge">NEW</span>
+        </div>
+        <div class="chart-item">
+            <span class="chart-pos">10</span>
+            <div class="chart-info">
+                <span class="chart-title">drivers license</span>
+                <span class="chart-artist">Olivia Rodrigo</span>
+            </div>
+            <span class="chart-badge">&#9660; -3</span>
+        </div>
+    </div>
+</div>
+""",
+    },
+    {
+        "title": "Реклама",
+        "slug": "ads",
+        "page_type": "ads",
+        "sort_order": 1,
+        "content": """
+<div class="pg-section">
+    <p class="pg-lead">Размещайте рекламу на нашем радио и достигайте тысяч слушателей ежедневно.</p>
+
+    <div class="pg-cards">
+        <div class="pg-card pg-card-accent">
+            <div class="pg-card-icon">&#127897;</div>
+            <h3>Аудио-ролики</h3>
+            <p>Ваш рекламный ролик в эфире между треками. До 30 секунд, профессиональная озвучка.</p>
+            <div class="pg-price">от 5 000 &#8381;/нед</div>
+        </div>
+        <div class="pg-card pg-card-accent">
+            <div class="pg-card-icon">&#127912;</div>
+            <h3>Баннер на сайте</h3>
+            <p>Графический баннер на главной странице и страницах станций. Видят все посетители.</p>
+            <div class="pg-price">от 3 000 &#8381;/нед</div>
+        </div>
+        <div class="pg-card pg-card-accent">
+            <div class="pg-card-icon">&#11088;</div>
+            <h3>Спонсорство станции</h3>
+            <p>Ваш бренд — спонсор целой станции. Логотип, упоминания в эфире, эксклюзивность.</p>
+            <div class="pg-price">от 15 000 &#8381;/мес</div>
+        </div>
+    </div>
+
+    <div class="pg-cta-box">
+        <h3>Готовы начать?</h3>
+        <p>Свяжитесь с нами для обсуждения индивидуальных условий размещения.</p>
+        <div class="pg-cta-contacts">
+            <span>&#9993; ads@onlineradio.ru</span>
+            <span>&#9742; +7 (999) 123-45-67</span>
+        </div>
+    </div>
+</div>
+""",
+    },
+    {
+        "title": "Подписка",
+        "slug": "subscription",
+        "page_type": "subscription",
+        "sort_order": 2,
+        "content": """
+<div class="pg-section">
+    <p class="pg-lead">Выберите план и наслаждайтесь музыкой без ограничений.</p>
+
+    <div class="pg-pricing">
+        <div class="pg-plan">
+            <div class="pg-plan-header">
+                <h3>Free</h3>
+                <div class="pg-plan-price">0 &#8381;<span>/мес</span></div>
+            </div>
+            <ul class="pg-plan-features">
+                <li>&#10003; Все станции</li>
+                <li>&#10003; Стандартное качество 128 kbps</li>
+                <li>&#10003; Реклама в эфире</li>
+                <li class="pg-plan-disabled">&#10007; Без рекламы</li>
+                <li class="pg-plan-disabled">&#10007; Высокое качество</li>
+                <li class="pg-plan-disabled">&#10007; Офлайн-режим</li>
+            </ul>
+            <div class="pg-plan-action">
+                <span class="pg-btn pg-btn-outline">Текущий план</span>
+            </div>
+        </div>
+
+        <div class="pg-plan pg-plan-popular">
+            <div class="pg-plan-badge">Популярный</div>
+            <div class="pg-plan-header">
+                <h3>Premium</h3>
+                <div class="pg-plan-price">299 &#8381;<span>/мес</span></div>
+            </div>
+            <ul class="pg-plan-features">
+                <li>&#10003; Все станции</li>
+                <li>&#10003; Качество 320 kbps</li>
+                <li>&#10003; Без рекламы</li>
+                <li>&#10003; Эквалайзер</li>
+                <li class="pg-plan-disabled">&#10007; Офлайн-режим</li>
+                <li class="pg-plan-disabled">&#10007; Эксклюзивный контент</li>
+            </ul>
+            <div class="pg-plan-action">
+                <span class="pg-btn pg-btn-primary">Выбрать</span>
+            </div>
+        </div>
+
+        <div class="pg-plan">
+            <div class="pg-plan-header">
+                <h3>VIP</h3>
+                <div class="pg-plan-price">599 &#8381;<span>/мес</span></div>
+            </div>
+            <ul class="pg-plan-features">
+                <li>&#10003; Все станции</li>
+                <li>&#10003; Lossless качество</li>
+                <li>&#10003; Без рекламы</li>
+                <li>&#10003; Эквалайзер</li>
+                <li>&#10003; Офлайн-режим</li>
+                <li>&#10003; Эксклюзивные миксы</li>
+            </ul>
+            <div class="pg-plan-action">
+                <span class="pg-btn pg-btn-primary">Выбрать</span>
+            </div>
+        </div>
+    </div>
+</div>
+""",
+    },
+    {
+        "title": "Расписание эфира",
+        "slug": "schedule",
+        "page_type": "custom",
+        "sort_order": 3,
+        "content": """
+<div class="pg-section">
+    <p class="pg-lead">Программа передач на эту неделю. Не пропустите любимые шоу!</p>
+
+    <div class="schedule-grid">
+        <div class="schedule-day">
+            <h3 class="schedule-day-title">Понедельник — Пятница</h3>
+            <div class="schedule-items">
+                <div class="schedule-item">
+                    <span class="schedule-time">06:00 — 10:00</span>
+                    <div class="schedule-show">
+                        <span class="schedule-name">Утреннее шоу</span>
+                        <span class="schedule-desc">Бодрые хиты и новости для отличного начала дня</span>
+                    </div>
+                </div>
+                <div class="schedule-item">
+                    <span class="schedule-time">10:00 — 14:00</span>
+                    <div class="schedule-show">
+                        <span class="schedule-name">Дневной микс</span>
+                        <span class="schedule-desc">Лучшие треки всех жанров нон-стоп</span>
+                    </div>
+                </div>
+                <div class="schedule-item">
+                    <span class="schedule-time">14:00 — 18:00</span>
+                    <div class="schedule-show">
+                        <span class="schedule-name">Хит-парад</span>
+                        <span class="schedule-desc">Топ-20 треков недели по голосованию слушателей</span>
+                    </div>
+                </div>
+                <div class="schedule-item">
+                    <span class="schedule-time">18:00 — 22:00</span>
+                    <div class="schedule-show">
+                        <span class="schedule-name">Вечерний драйв</span>
+                        <span class="schedule-desc">Энергичная музыка для вечера</span>
+                    </div>
+                </div>
+                <div class="schedule-item">
+                    <span class="schedule-time">22:00 — 02:00</span>
+                    <div class="schedule-show">
+                        <span class="schedule-name">Ночной сет</span>
+                        <span class="schedule-desc">Deep house и chill-out для ночных слушателей</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="schedule-day">
+            <h3 class="schedule-day-title">Суббота — Воскресенье</h3>
+            <div class="schedule-items">
+                <div class="schedule-item">
+                    <span class="schedule-time">08:00 — 12:00</span>
+                    <div class="schedule-show">
+                        <span class="schedule-name">Weekend Vibes</span>
+                        <span class="schedule-desc">Расслабленные хиты для ленивого утра</span>
+                    </div>
+                </div>
+                <div class="schedule-item">
+                    <span class="schedule-time">12:00 — 18:00</span>
+                    <div class="schedule-show">
+                        <span class="schedule-name">Дискотека 90-х</span>
+                        <span class="schedule-desc">Легендарные хиты золотой эпохи</span>
+                    </div>
+                </div>
+                <div class="schedule-item">
+                    <span class="schedule-time">18:00 — 00:00</span>
+                    <div class="schedule-show">
+                        <span class="schedule-name">DJ-сет Live</span>
+                        <span class="schedule-desc">Живые миксы от приглашённых диджеев</span>
+                    </div>
+                </div>
+                <div class="schedule-item">
+                    <span class="schedule-time">00:00 — 08:00</span>
+                    <div class="schedule-show">
+                        <span class="schedule-name">Ambient Night</span>
+                        <span class="schedule-desc">Атмосферная электроника до утра</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+""",
+    },
+    {
+        "title": "О нас",
+        "slug": "about",
+        "page_type": "custom",
+        "sort_order": 4,
+        "content": """
+<div class="pg-section">
+    <p class="pg-lead">Мы — команда меломанов, которые создали радио для таких же, как мы.</p>
+
+    <div class="pg-cards">
+        <div class="pg-card">
+            <div class="pg-card-icon">&#127911;</div>
+            <h3>10 станций</h3>
+            <p>От deep house до рока — каждый найдёт свою волну.</p>
+        </div>
+        <div class="pg-card">
+            <div class="pg-card-icon">&#127760;</div>
+            <h3>24/7 в эфире</h3>
+            <p>Музыка не останавливается ни на секунду, круглосуточно.</p>
+        </div>
+        <div class="pg-card">
+            <div class="pg-card-icon">&#128101;</div>
+            <h3>Синхронный эфир</h3>
+            <p>Все слушатели на одной волне — как настоящее радио.</p>
+        </div>
+    </div>
+
+    <div class="pg-about-story">
+        <h2>Наша история</h2>
+        <p>Проект стартовал в 2024 году как небольшой эксперимент — можно ли сделать онлайн-радио, где все слушатели слышат одно и то же одновременно? Оказалось, можно. И это оказалось невероятно круто.</p>
+        <p>Сегодня нас слушают тысячи людей каждый день. Мы тщательно подбираем плейлисты, приглашаем диджеев и постоянно добавляем новые станции.</p>
+        <p>Наша миссия — дарить людям настоящее радио в цифровую эпоху. Без алгоритмов, без пузырей фильтров — просто отличная музыка для всех.</p>
+    </div>
+
+    <div class="pg-cta-box">
+        <h3>Хотите сотрудничать?</h3>
+        <p>Мы открыты для диджеев, музыкантов и партнёров.</p>
+        <div class="pg-cta-contacts">
+            <span>&#9993; hello@onlineradio.ru</span>
+            <span>&#9742; +7 (999) 000-00-00</span>
+        </div>
+    </div>
+</div>
+""",
+    },
+]
+
+
+# ---------------------------------------------------------------------------
 # Seed data — demo Radio Record stations
 # ---------------------------------------------------------------------------
 
@@ -291,6 +635,24 @@ def init_db(app: Flask) -> None:
             )
 
     _seed_site_settings(conn)
+
+    # Seed demo pages if none exist
+    row = conn.execute("SELECT COUNT(*) FROM pages").fetchone()
+    if row[0] == 0:
+        now = time.time()
+        for pg in _DEMO_PAGES:
+            conn.execute(
+                "INSERT INTO pages (title, slug, page_type, content, is_active, sort_order, created_at) "
+                "VALUES (?, ?, ?, ?, 1, ?, ?)",
+                (
+                    pg["title"],
+                    pg["slug"],
+                    pg["page_type"],
+                    pg["content"],
+                    pg["sort_order"],
+                    now,
+                ),
+            )
 
     conn.commit()
     conn.close()

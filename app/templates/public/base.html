@@ -40,6 +40,9 @@
             <a href="{{ url_for('public.index') }}" class="logo">&#9836; {{ site_settings.get('site_title', 'Онлайн Радио') }}</a>
             <nav class="header-nav">
                 <a href="{{ url_for('public.index') }}">Станции</a>
+                {% for pg in nav_pages %}
+                <a href="{{ url_for('public.page', slug=pg.slug) }}">{{ pg.title }}</a>
+                {% endfor %}
                 <a href="{{ url_for('auth.login') }}" class="btn-header">Админ</a>
             </nav>
         </div>
